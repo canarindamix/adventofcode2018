@@ -1,0 +1,77 @@
+package Day2
+
+import com.google.common.base.CharMatcher
+
+class InventoryManagementSystem {
+
+    File f = new File("input.txt")
+    def lines = f.readLines()
+
+    int numberOfIdsWithAtLeastOneLetterRepeatedExactlyTwice = 0
+    int numberOfIdsWithAtLeastOneLetterRepeatedExactlyThrice = 0
+
+    void computeChecksum(){
+
+        for(String line:lines){
+            if (isThereAnyRepetition(line,2)) numberOfIdsWithAtLeastOneLetterRepeatedExactlyTwice += 1
+            if (isThereAnyRepetition(line,3)) numberOfIdsWithAtLeastOneLetterRepeatedExactlyThrice += 1
+        }
+
+        println "result checksum " + (numberOfIdsWithAtLeastOneLetterRepeatedExactlyTwice * numberOfIdsWithAtLeastOneLetterRepeatedExactlyThrice)
+    }
+
+    void findCorrectBoxesCommonId(){
+
+        String difference
+        String id1
+        String id2
+
+        for(int i=0; i <= lines.size()-2; i++ ){
+            for(int j=i+1; j <= lines.size()-1; j++){
+
+                id1 = lines.get(i)
+                id2 = lines.get(j)
+
+                //IDs we search differ by exactly ONE char, so they must have the same length
+                if(id1.size() == id2.size()){
+                    difference = stripChars(id1,id2)
+                    //they must have only one char that differs
+                    if (difference.size() == 1){
+                        //when the diff char is removed we should get the same sequence of chars remaining
+                        if(stripChars(id1, difference) == stripChars(id2, difference)){
+                            println "common ID is " + stripChars(id1, difference)
+                            break
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    boolean isThereAnyRepetition(String input, int numberOfExactRepetition){
+
+        //Will store each character and it's count
+        HashMap<Character, Integer> map = new HashMap<Character, Integer>()
+        for (int i = 0; i <input.length(); i++) {
+            Character chr = input.charAt(i)
+            if(map.containsKey(chr)){
+                map.put(chr,map.get(chr)+1)
+            }else{
+                map.put(chr, 1)
+            }
+        }
+        //Iterate the string and return true for the first character appearing exactly "numberOfExactRepetition" times
+        for (int i = 0; i <input.length() ; i++) {
+            if(map.get(input.charAt(i)) == numberOfExactRepetition){
+                return true
+            }
+        }
+        return false
+    }
+
+    String stripChars(String stringToFilter, String charsToRemove) {
+        String filtered = CharMatcher.anyOf(charsToRemove).removeFrom(stringToFilter)
+        return filtered
+    }
+
+}
