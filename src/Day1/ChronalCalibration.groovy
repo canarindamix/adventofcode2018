@@ -6,33 +6,31 @@ class ChronalCalibration {
     def lines = f.readLines()
 
     void phase1(){
-        Integer frequencySum = 0
+        Integer sum = 0
         lines.forEach(){ frequency ->
-            frequencySum += Integer.parseInt(frequency)
+            sum += Integer.parseInt(frequency)
         }
-        println  "resulting frequency " + frequencySum
+        println  "Phase 1: resulting frequency " + sum
     }
 
     void phase2() {
 
         Integer frequencySum = Integer.valueOf(0)
+        boolean foundFirstRepeatingFrequency = false
         List<Integer> listOfFrequencies = new ArrayList<Integer>()
-        //listOfFrequencies.add(Integer.valueOf("5"))
 
-        println "number of freqs " + lines.size()
+        while (!foundFirstRepeatingFrequency) {
 
-        for (String freq:lines){
-            frequencySum = frequencySum + Integer.valueOf(freq)
-            //if (listOfFrequencies.contains(Integer.valueOf(frequencySum))){
-            if (listOfFrequencies.contains(frequencySum)){
-                println listOfFrequencies.toString()
-                break
-            } else
-            listOfFrequencies.add(Integer.valueOf(frequencySum))
+            for (String freq:lines){
+                frequencySum = frequencySum + freq.toInteger()
+
+                if (listOfFrequencies.contains(frequencySum)){
+                    println "Phase 2: first repeating frequency " + frequencySum
+                    foundFirstRepeatingFrequency = true
+                    break
+                }
+                listOfFrequencies.add(frequencySum)
+            }
         }
-
-        println "size of set of intermediate freqs " + listOfFrequencies.size()
-        println "first repeating frequency " + frequencySum
-
     }
 }
