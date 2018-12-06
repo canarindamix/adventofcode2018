@@ -26,8 +26,8 @@ class InventoryManagementSystem {
         String id1
         String id2
 
-        for(int i=0; i <= lines.size()-2; i++ ){
-            for(int j=i+1; j <= lines.size()-1; j++){
+        for(int i=0; i < lines.size()-1; i++ ){
+            for(int j=i+1; j < lines.size(); j++){
 
                 id1 = lines.get(i)
                 id2 = lines.get(j)
@@ -37,8 +37,12 @@ class InventoryManagementSystem {
                     difference = stripChars(id1,id2)
                     //they must have only one char that differs
                     if (difference.size() == 1){
+                        //let'remove the char that differs from both strings
+                        id1 = stripChars(id1,difference)
+                        difference = stripChars(id2, id1)
+                        id2 = stripChars(id2, difference)
                         //when the diff char is removed we should get the same sequence of chars remaining
-                        if(stripChars(id1, difference) == stripChars(id2, difference)){
+                        if(id1 == id2){
                             println "common ID is " + stripChars(id1, difference)
                             break
                         }
