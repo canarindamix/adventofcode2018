@@ -2,7 +2,7 @@ package Day1
 
 class ChronalCalibration {
 
-    File f = new File("input.txt")
+    File f = new File("../../resources/day1Input.txt")
     def lines = f.readLines()
 
     void phase1(){

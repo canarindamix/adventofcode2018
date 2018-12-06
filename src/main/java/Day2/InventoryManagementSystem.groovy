@@ -4,7 +4,7 @@ import com.google.common.base.CharMatcher
 
 class InventoryManagementSystem {
 
-    File f = new File("input.txt")
+    File f = new File("../../resources/day2Input.txt")
     def lines = f.readLines()
 
     int numberOfIdsWithAtLeastOneLetterRepeatedExactlyTwice = 0
@@ -13,8 +13,8 @@ class InventoryManagementSystem {
     void computeChecksum(){
 
         for(String line:lines){
-            if (isThereAnyRepetition(line,2)) numberOfIdsWithAtLeastOneLetterRepeatedExactlyTwice += 1
-            if (isThereAnyRepetition(line,3)) numberOfIdsWithAtLeastOneLetterRepeatedExactlyThrice += 1
+            if (isThereAnyRepeatedLetter(line,2)) numberOfIdsWithAtLeastOneLetterRepeatedExactlyTwice += 1
+            if (isThereAnyRepeatedLetter(line,3)) numberOfIdsWithAtLeastOneLetterRepeatedExactlyThrice += 1
         }
 
         println "result checksum " + (numberOfIdsWithAtLeastOneLetterRepeatedExactlyTwice * numberOfIdsWithAtLeastOneLetterRepeatedExactlyThrice)
@@ -52,7 +52,7 @@ class InventoryManagementSystem {
         }
     }
 
-    boolean isThereAnyRepetition(String input, int numberOfExactRepetition){
+    boolean isThereAnyRepeatedLetter(String input, int numberOfExactRepetition){
 
         //Will store each character and it's count
         HashMap<Character, Integer> map = new HashMap<Character, Integer>()
@@ -73,6 +73,7 @@ class InventoryManagementSystem {
         return false
     }
 
+    //removes all charsToRemove from stringToFilter
     String stripChars(String stringToFilter, String charsToRemove) {
         String filtered = CharMatcher.anyOf(charsToRemove).removeFrom(stringToFilter)
         return filtered
