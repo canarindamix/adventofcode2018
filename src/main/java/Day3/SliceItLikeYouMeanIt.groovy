@@ -47,26 +47,23 @@ class SliceItLikeYouMeanIt {
     }
 
     void findSingleNonOverlappingPatch(){
-        Set<Rectangle> rectangleWithNoOverlap = new HashSet<Rectangle>()
+
         boolean currentHasOverlap
-        for(int i=0; i < rectangles.size()-1; i++){
 
+        for(Rectangle rectA:rectangles){
             currentHasOverlap = false
-
-            for(int j=0; j < rectangles.size(); j++){
-                if (rectanglesOverlap(rectangles.get(i),rectangles.get(j))){
+            for(Rectangle rectB:rectangles){
+                if(!(rectA == rectB) && rectanglesOverlap(rectA,rectB)){
                     currentHasOverlap = true
+                    break
                 }
             }
 
-            if (currentHasOverlap){
-                rectangleWithNoOverlap.remove(rectangles.get(i))
-            } else {
-                rectangleWithNoOverlap.add(rectangles.get(i))
+            if(!currentHasOverlap) {
+                println "the ID of the rectangle with no overlap is " + rectA.ID
+                break
             }
         }
-
-        println rectangleWithNoOverlap.size()
     }
 
     List<Rectangle> parseRectangles(){
