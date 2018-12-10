@@ -2,5 +2,5 @@ package Day3
 
 app=new SliceItLikeYouMeanIt()
 
-//app.findTotalMultiClaimedSurface()
+app.findTotalMultiClaimedSurface()
 app.findSingleNonOverlappingPatch()
