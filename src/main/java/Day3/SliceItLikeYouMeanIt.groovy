@@ -4,11 +4,12 @@ class SliceItLikeYouMeanIt {
 
     File f = new File("../../resources/day3Input.txt")
     def lines = f.readLines()
+    List<Rectangle> rectangles = parseRectangles()
+
 
     void findTotalMultiClaimedSurface(){
         int xMax
         int yMax
-        List<Rectangle> rectangles = parseRectangles()
 
         // find the minimal size of the canvas able to contain all the patches
         for(Rectangle rectangle:rectangles){
@@ -45,19 +46,72 @@ class SliceItLikeYouMeanIt {
         println "Number of square inches claimed by more than one patch " + squareInchesMultiClaimed
     }
 
+    void findSingleNonOverlappingPatch(){
+        Set<Rectangle> rectangleWithNoOverlap = new HashSet<Rectangle>()
+        boolean currentHasOverlap
+        for(int i=0; i < rectangles.size()-1; i++){
+
+            currentHasOverlap = false
+
+            for(int j=0; j < rectangles.size(); j++){
+                if (rectanglesOverlap(rectangles.get(i),rectangles.get(j))){
+                    currentHasOverlap = true
+                }
+            }
+
+            if (currentHasOverlap){
+                rectangleWithNoOverlap.remove(rectangles.get(i))
+            } else {
+                rectangleWithNoOverlap.add(rectangles.get(i))
+            }
+        }
+
+        println rectangleWithNoOverlap.size()
+    }
+
     List<Rectangle> parseRectangles(){
         List<Rectangle> rectangleList = new ArrayList<Rectangle>()
         String rectangleDefinition
         String[] rectangleCoordinates
         String[] rectangleSize
+        String id
         for(String line:lines){
-            rectangleDefinition = line.replace(' ',''). split('@')[1]
+            line = line.replace(' ', '')
+            id = line.split('@')[0].replace('#','')
+            rectangleDefinition = line.split('@')[1]
             rectangleCoordinates = rectangleDefinition.split('\\:')[0].split(',')
             rectangleSize = rectangleDefinition.split('\\:')[1].split('x')
-            rectangleList.add(new Rectangle(rectangleCoordinates[0], rectangleCoordinates[1], rectangleSize[0], rectangleSize[1]))
+            rectangleList.add(new Rectangle(id, rectangleCoordinates[0], rectangleCoordinates[1], rectangleSize[0], rectangleSize[1]))
 
         }
         return rectangleList
     }
 
+    boolean rectanglesOverlap (Rectangle a, Rectangle b){
+
+        Rectangle leftMostRectangle
+        Rectangle rightMostRectangle
+        Rectangle topMostRectangle
+        Rectangle bottomMostRectangle
+
+        if (a.x < b.x){
+            leftMostRectangle = a
+            rightMostRectangle = b
+        } else {
+            leftMostRectangle = b
+            rightMostRectangle = a
+        }
+
+        if (a.y < b.y){
+            topMostRectangle = b
+            bottomMostRectangle = a
+        }  else {
+            topMostRectangle = a
+            bottomMostRectangle = b
+        }
+
+        if((leftMostRectangle.x + leftMostRectangle.width) - rightMostRectangle.x >= 0 && (bottomMostRectangle.y + bottomMostRectangle.height) - topMostRectangle.y >= 0){
+            return true
+        } else return false
+    }
 }
