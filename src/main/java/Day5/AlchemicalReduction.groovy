@@ -6,8 +6,25 @@ class AlchemicalReduction {
     def polymer = f.readLines()
 
     void findNumberOfUnitsAfterReaction(){
-        String test = reactPolymer(polymer.get(0))
-        println "number of units left after reaction " + test.size()
+        String reactedPolymer = reactPolymer(polymer.get(0))
+        println "number of units left after reaction " + reactedPolymer.size()
+    }
+
+    void findShortestPolymer(){
+
+        String strippedPolymer
+        String reactedPolymer
+        List<Integer> reactedPolymersSizes = new ArrayList<Integer>()
+
+        for(char unit = 'a'; unit <= 'z'; unit++){
+            strippedPolymer = polymer.get(0).replace(unit.toString(),'').replace(unit.toUpperCase().toString(),'')
+            reactedPolymer = reactPolymer(strippedPolymer)
+            reactedPolymersSizes.add(reactedPolymer.size())
+        }
+
+        reactedPolymersSizes.sort()
+
+        println "size of the shortest polymer produce after removing one single type of unit: " + reactedPolymersSizes.get(0)
     }
 
     String reactPolymer(String polymer){
